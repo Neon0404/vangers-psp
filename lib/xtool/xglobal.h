@@ -8,7 +8,7 @@
 #include <process.h>
 #endif
 
-#include <SDL.h>
+#include "SDL.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>

@@ -9,29 +9,6 @@
 #include "../sqexp.h"
 #include "../backg.h"
 
-#if !(defined(__unix__) || defined(__APPLE__))
-static WIN32_FIND_DATA FFdata;
-static HANDLE FFh;
-char* win32_findnext(void)
-{
-	if(FindNextFile(FFh,&FFdata) == TRUE){
-		if(FFdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) return win32_findnext();
-		return FFdata.cFileName;
-		}
-	else {
-		FindClose(FFh);
-		return NULL;
-		}
-}
-
-char* win32_findfirst(const char* mask)
-{
-	FFh = FindFirstFile(mask,&FFdata);
-	if(FFh == INVALID_HANDLE_VALUE) return NULL;
-	if(FFdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) return win32_findnext();
-	return FFdata.cFileName;
-}
-#endif
 
 #include "../particle/particle.h"
 #include "../particle/partmap.h"
@@ -690,6 +667,7 @@ void MLload(void)
 	};
 #endif
 MLTableSize = 0;
+/*
 #if !(defined(__unix__) || defined(__APPLE__))
 	buf.init();
 	buf < "data.vot/*.vot";
@@ -716,7 +694,7 @@ MLTableSize = 0;
 	} 
 	
 
-#endif
+#endif*/
 	
 #ifdef _ROAD_
 #if !(defined(__unix__) || defined(__APPLE__))
@@ -747,7 +725,7 @@ MLTableSize = 0;
 	};
 #else
 	struct dirent **namelist2;
-	n = scandir(tmp.c_str(), &namelist2, 0, alphasort); 
+	int n = 0;//scandir(tmp.c_str(), &namelist2, 0, alphasort); 
 	if (n < 0) 
 		perror("scandir"); 
 	else { 

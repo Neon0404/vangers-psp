@@ -2,23 +2,23 @@
 #define _XSOCKET_H
 
 #include "xglobal.h"
-#include "SDL_net.h"
+//#include "SDL_net.h"
 
 #include "xcontainers.h"
 
 int XSocketInit(int ErrHUsed = 1);
 
 // extern char XSocketLocalHostName[257];
-extern IPaddress XSocketLocalHostADDR; // used in network.cpp
-extern IPaddress XSocketLocalHostExternADDR; // used in iscreen/iscr_fnc.cpp
+//extern IPaddress XSocketLocalHostADDR; // used in network.cpp
+//extern IPaddress XSocketLocalHostExternADDR; // used in iscreen/iscr_fnc.cpp
 
 class XSocket
 {
 	int ErrHUsed;
-	TCPsocket tcpSock;
-	SDLNet_SocketSet socketSet;
+	//TCPsocket tcpSock;
+	//SDLNet_SocketSet socketSet;
 	public:
-		IPaddress addr;
+		//IPaddress addr;
 
 		XSocket();
 		~XSocket();
@@ -36,8 +36,8 @@ class XSocket
 		int send(const char* buffer, int size);
 		int receive(char* buffer, int size_of_buffer, int ms_time = 0);
 
-		int operator! (){ return tcpSock == NULL; }
-		int operator() (){ return tcpSock != NULL; }
+		int operator! (){ return 0; }
+		int operator() (){ return 0; }
 
 	private:
 		int tcp_open();

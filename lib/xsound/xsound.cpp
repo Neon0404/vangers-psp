@@ -2,7 +2,7 @@
 
 //#include "dsound.h"
 //#include <SDL_mixer.h>
-#include <clunk/clunk.h>
+#include <clunk.h>
 
 #include "xglobal.h"
 #include "xgraph.h"

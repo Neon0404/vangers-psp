@@ -10,6 +10,9 @@
 
 #ifndef __XGRAPH_H__
 #define __XGRAPH_H__
+#include <string.h>
+#include <stdlib.h>
+char* strdup (const char* s);
 
 #include "xglobal.h"
 

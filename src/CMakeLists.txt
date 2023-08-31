@@ -1,4 +1,8 @@
 include_directories(
+	/home/neon/Desktop/ffmpeg/libavformat
+	/home/neon/Desktop/ffmpeg/
+	/home/neon
+        /home/neon/pspdev/psp/include
 	"${PROJECT_SOURCE_DIR}/lib/xtool"
 	"${PROJECT_SOURCE_DIR}/lib/xgraph"
 	"${PROJECT_SOURCE_DIR}/lib/xsound"
@@ -71,13 +75,7 @@ SET(vangers_SRCS
 	${WINDOWS_RES}
         actint/layout.h)
 
-if (ANDROID)
-	ADD_LIBRARY(vangers STATIC ${vangers_SRCS}
-		$<TARGET_OBJECTS:xtool>
-		$<TARGET_OBJECTS:xgraph>
-		$<TARGET_OBJECTS:xsound>
-	)
-else()
+
 	ADD_EXECUTABLE(vangers ${vangers_SRCS})
 
 	IF(WIN32)
@@ -87,21 +85,41 @@ else()
 			#-Wl,-subsystem,windows
 		)
 	ENDIF(WIN32)
-
+        
 	TARGET_LINK_LIBRARIES(vangers
-		${SDL2_LIBRARY}
+SDL2main
+                pspdebug
+                pspdisplay
+                pspge
+                pspctrl
+                pspaudio
+                pspaudiolib
+                psputility
+                -lpspvram
+                -lpsphprm
+                -lpspvfpu
+                -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpsputility -lpspnet_inet  -lpsppower -lz -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -lz -lpsppower
+                /home/neon/pspgl/libGL.a
+/home/neon/pspgl/libGLU.a
+/home/neon/pspgl/libglut.a
+                #/usr/lib/x86_64-linux-gnu/libavcodec.a
+                /home/neon/pspdev/psp/lib/libSDL2.a
+                /home/neon/clunk/libclunk.a
 		${OGG_LIBRARY}
 		${VORBIS_LIBRARY}
 		${VORBISFILE_LIBRARY}
-		${CLUNK_LIBRARY}
-		${SDL2_NET_LIBRARY}
 		${FFMPEG_LIBRARIES}
 		${ZLIB_LIBRARIES}
 		${OPENGL_LIBRARIES}
-		${WIN_LIB}
-		${STEAM_LIBS}
 		xtool
 		xgraph
 		xsound
 	)
-endif(ANDROID)
+
+create_pbp_file(
+    TARGET ${PROJECT_NAME}
+    ICON_PATH NULL
+    BACKGROUND_PATH NULL
+    PREVIEW_PATH NULL
+    TITLE ${PROJECT_NAME}
+)

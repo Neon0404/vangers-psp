@@ -24,15 +24,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # depends
-FIND_PACKAGE(SDL2 REQUIRED)
-FIND_PACKAGE(SDL2_net REQUIRED)
+#FIND_PACKAGE(SDL2 REQUIRED)
+#FIND_PACKAGE(SDL2_net REQUIRED)
 FIND_PACKAGE(Ogg REQUIRED)
 FIND_PACKAGE(Vorbis REQUIRED)
 FIND_PACKAGE(VorbisFile REQUIRED)
 
 FIND_PACKAGE(Clunk REQUIRED)
 
-FIND_PACKAGE(FFMPEG REQUIRED)
+#FIND_PACKAGE(FFMPEG REQUIRED)
 FIND_PACKAGE(ZLIB REQUIRED)
 set(WINDOWS_RES "../vangers.res")
 
@@ -48,13 +48,21 @@ IF(DIAGEN_TEST)
 	ADD_DEFINITIONS(-DDIAGEN_TEST)
 ENDIF(DIAGEN_TEST)
 
+add_compile_definitions(M_PI=3.14159265358979323846)
+add_compile_definitions(M_SQRT1_2=0.707106781186547524401)
+add_compile_definitions(M_PI_2=1.57079632679489661923)
+
+
 # globals
 INCLUDE_DIRECTORIES(SYSTEM
+	home/neon/Desktop/ffmpeg/libavformat
+	/home/neon/Desktop/ffmpeg/libavcodec
 	${ZLIB_INCLUDE_DIR}
-	${SDL2_INCLUDE_DIR}
-	${SDL2_NET_INCLUDE_DIRS}
-	${FFMPEG_INCLUDE_DIRS}
-	${CLUNK_INCLUDE_DIR}
+	/home/neon/pspdev/psp/include/SDL2
+	/home/neon/pspdev/psp/include
+	/home/neon/Vangers
+	#${FFMPEG_INCLUDE_DIRS}
+	/home/neon/clunk
 	${OGG_INCLUDE_DIR}
 	${VORBIS_INCLUDE_DIR}
 	${VORBISFILE_INCLUDE_DIR}
@@ -70,6 +78,8 @@ IF(HAVE_SIMDSSE)
 ENDIF()
 # For modern gcc
 add_definitions(-D_USE_MATH_DEFINES)
+
+add_compile_definitions(__unix__)
 
 add_compile_options(-Werror=shift-negative-value)
 add_compile_options(-Werror=dangling-else)
@@ -119,7 +129,7 @@ ADD_SUBDIRECTORY("lib/xsound")
 ADD_SUBDIRECTORY("lib/xtool")
 
 if(NOT ANDROID)
-	ADD_SUBDIRECTORY("lib/utils")
-	ADD_SUBDIRECTORY("server")
-	ADD_SUBDIRECTORY("surmap")
+	#ADD_SUBDIRECTORY("lib/utils")
+	#ADD_SUBDIRECTORY("server")
+	#ADD_SUBDIRECTORY("surmap")
 endif()

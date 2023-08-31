@@ -22,7 +22,7 @@
 #include "port.h"
 #define itoa port_itoa
 #include "missed.h"
-
+#include <dirent.h>
 #ifdef _NT
 #include "..\root\win32f.h"
 #endif
@@ -805,29 +805,29 @@ iInputForm::iInputForm(sqElem* _owner,int _x,int _y,int _mode)
 		switch(MLstatus){
 		case 0:
 			if(!MLprocess)
-				*menu * new sqMenuBar((uchar*)RUS(" §à¥è¨âì ML- ­¨¬ æ¨î"),menu);
+				*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),menu);
 			else
-				*menu * new sqMenuBar((uchar*)RUS("‡ ¯à¥â¨âì ML- ­¨¬ æ¨î"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("‘®§¤ ­¨¥ ­®¢®£® ML-®¡ê¥ªâ "),menu);
-			*menu * new sqMenuBar((uchar*)RUS("®ª ¤à®¢®¥ à¥¤ ªâ¨à®¢ ­¨¥ áãé¥áâ¢ãîé¨å ML-®¡ê¥ªâ®¢..."),menu);
-			*menu * new sqMenuBar((uchar*)RUS("“¤ «¥­¨¥ ML-®¡ê¥ªâ®¢..."),menu);
-			*menu * new sqMenuBar((uchar*)RUS("¥¤ ªâ¨à®¢ ­¨¥ ¯ à ¬¥âà®¢ ã áãé¥áâ¢ãîé¨å ML-®¡ê¥ªâ®¢..."),menu);
-			*menu * new sqMenuBar((uchar*)RUS("®ª § âì ®¤¨­ ¨§ áãé¥áâ¢ãîé¨å ML-®¡ê¥ªâ®¢..."),menu);
+				*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½à®¢ï¿½ï¿½ à¥¤ï¿½ï¿½ï¿½à®¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªâ®¢..."),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªâ®¢..."),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à®¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½à ¬ï¿½ï¿½à®¢ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªâ®¢..."),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªâ®¢..."),menu);
 			break;
 		case 1:
-			*menu * new sqMenuBar((uchar*)RUS("„®¡ ¢¨âì ª ¤à"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("‡ ª®­ç¨âì á®§¤ ­¨¥ ML-®¡ê¥ªâ  ¨ § ¯¨á âì ¥£®"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("à¥ªà â¨âì á®§¤ ­¨¥ ML-®¡ê¥ªâ  ¡¥§ á®åà ­¥­¨ï à¥§ã«ìâ â®¢"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ á®§ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½à¥ªï¿½ï¿½ï¿½ï¿½ á®§ï¿½ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½à ­ï¿½ï¿½ï¿½ï¿½ à¥§ï¿½ï¿½ï¿½â®¢"),menu);
 			break;
 		case 2:
-			*menu * new sqMenuBar((uchar*)RUS("[G] ¥à¥©â¨ ­  ®¤¨­ ¨§ áãé¥áâ¢ãîé¨å ª ¤à®¢..."),menu);
-			*menu * new sqMenuBar((uchar*)RUS("[A] ‡ ¯®¬­¨âì ¨§¬¥­¥­¨ï â¥ªãé¥£® ª ¤à "),menu);
-			*menu * new sqMenuBar((uchar*)RUS("[Q] ‚®ááâ ­®¢¨âì ª ¤à ¢ ¥£® ­ ç «ì­®¥ á®áâ®ï­¨¥"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("[N] ‚áâ ¢¨âì ­®¢ë© ª ¤à"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("[D] “¤ «¨âì â¥ªãé¨© ª ¤à"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("ˆ§¬¥­¨âì ¯ à ¬¥âàë ML-®¡ê¥ªâ "),menu);
-			*menu * new sqMenuBar((uchar*)RUS("‡ ª®­ç¨âì à¥¤ ªâ¨à®¢ ­¨¥ ML-®¡ê¥ªâ  ¨ á®åà ­¨âì ¢á¥ ¨§¬¥­¥­¨ï"),menu);
-			*menu * new sqMenuBar((uchar*)RUS("à¥ªà â¨âì à¥¤ ªâ¨à®¢ ­¨¥ ¡¥§ á®åà ­¥­¨ï ¢á¥å ¨§¬¥­¥­¨©"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("[G] ï¿½ï¿½à¥©ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½à®¢..."),menu);
+			*menu * new sqMenuBar((uchar*)RUS("[A] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ â¥ªï¿½é¥£ï¿½ ï¿½ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("[Q] ï¿½ï¿½ï¿½ï¿½â ­ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ç «ì­®ï¿½ ï¿½ï¿½ï¿½ï­¨ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("[N] ï¿½ï¿½â ¢ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("[D] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ â¥ªï¿½é¨© ï¿½ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½à ¬ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ à¥¤ï¿½ï¿½ï¿½à®¢ï¿½ï¿½ï¿½ï¿½ ML-ï¿½ï¿½ê¥ªï¿½ ï¿½ ï¿½ï¿½à ­ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),menu);
+			*menu * new sqMenuBar((uchar*)RUS("ï¿½à¥ªï¿½ï¿½ï¿½ï¿½ à¥¤ï¿½ï¿½ï¿½à®¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½à ­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),menu);
 			break;
 		}
 			if(copt >= 6) copt = 5;

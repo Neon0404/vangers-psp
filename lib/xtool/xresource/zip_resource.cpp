@@ -6,10 +6,24 @@
 #include "zip_headers.h"
 
 
+
 /* ----------------------------- STRUCT SECTION ----------------------------- */
 /* ----------------------------- EXTERN SECTION ----------------------------- */
 /* --------------------------- PROTOTYPE SECTION ---------------------------- */
 /* --------------------------- DEFINITION SECTION --------------------------- */
+
+char* strdup (const char* s)
+{
+  size_t slen = strlen(s);
+  char* result = (char*)malloc(slen + 1);
+  if(result == NULL)
+  {
+    return NULL;
+  }
+
+  memcpy(result, s, slen+1);
+  return result;
+}
 
 XZIP_FileHeader::XZIP_FileHeader(void)
 {
