@@ -1,11 +1,13 @@
 include_directories(
 	"${PROJECT_SOURCE_DIR}/lib/xtool"
 	"${PROJECT_SOURCE_DIR}/lib/xgraph"
+	"${PROJECT_SOURCE_DIR}/clunk"
+	"${PROJECT_SOURCE_DIR}"
 )
 
 SET(xsound_SRCS
 	xsound.cpp
-	avi.cpp
+	#avi.cpp
 	ogg_stream.cpp
 )
 
@@ -15,7 +17,7 @@ if (ANDROID)
 else()
 	ADD_LIBRARY(xsound STATIC ${xsound_SRCS})
 	TARGET_LINK_LIBRARIES(xsound
-		${CLUNK_LIBRARY}
+		#${CLUNK_LIBRARY}
 		${FFMPEG_LIBRARIES}
 		${OGG_LIBRARY}
 		${VORBIS_LIBRARY}

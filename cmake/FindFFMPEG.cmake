@@ -5,7 +5,7 @@
 # FFMPEG_INLUDE_DIRS
 # FFMPEG_LIBRARIES
 #
-
+#[===[
 FIND_PATH(AVUTIL_INCLUDE_DIR
 	NAMES
 		avutil.h
@@ -33,6 +33,7 @@ FIND_PATH(AVCODEC_INCLUDE_DIR
 	NAMES
 		avcodec.h
 	PATHS
+		/home/neon/Vangers/ffmpeg
 		/usr/local/include
 		/usr/pkg/include/ffmpeg3/libavcodec
 		/usr/include
@@ -56,6 +57,7 @@ FIND_PATH(AVFORMAT_INCLUDE_DIR
 	NAMES
 		avformat.h
 	PATHS
+		${PROJECT_SOURCE_DIR}
 		/usr/local/include
 		/usr/pkg/include/ffmpeg3/libavformat
 		/usr/include
@@ -81,6 +83,7 @@ FIND_LIBRARY(AVUTIL_LIBRARY
 		avutil-55
 		avutil-56
 	PATHS
+		${PROJECT_SOURCE_DIR}/ffmpeg/lib
 		/usr/local/lib
 		/usr/pkg/lib/ffmpeg3
 		/usr/lib
@@ -102,6 +105,7 @@ FIND_LIBRARY(AVCODEC_LIBRARY
 		avcodec-57
 		avcodec-58
 	PATHS
+		${PROJECT_SOURCE_DIR}/ffmpeg/lib
 		/usr/local/lib
 		/usr/pkg/lib/ffmpeg3
 		/usr/lib
@@ -122,6 +126,7 @@ FIND_LIBRARY(AVFORMAT_LIBRARY
 		avformat-57
 		avformat-58
 	PATHS
+		${PROJECT_SOURCE_DIR}/ffmpeg/lib
 		/usr/local/lib
 		/usr/pkg/lib/ffmpeg3
 		/usr/lib
@@ -136,7 +141,14 @@ FIND_LIBRARY(AVFORMAT_LIBRARY
 		/mingw/lib
 		/bin
 )
+]===]
 
+SET(AVCODEC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/ffmpeg/libavcodec)
+SET(AVFORMAT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/ffmpeg/libavformat)
+SET(FFMPEG_PARENT_DIR ${PROJECT_SOURCE_DIR}/ffmpeg/libavutil)
+
+FIND_LIBRARY(AVUTIL_LIBRARY ${PROJECT_SOURCE_DIR}/ffmpeg/lib/avutil.a)
+message(${AVUTIL_LIBRARYL})
 get_filename_component(FFMPEG_PARENT_DIR ${AVCODEC_INCLUDE_DIR} DIRECTORY)
 
 SET(FFMPEG_INCLUDE_DIRS
@@ -172,7 +184,6 @@ ENDIF(AVFORMAT_LIBRARY)
 IF(FFMPEG_INCLUDE_DIRS AND FFMPEG_LIBRARIES)
 	SET(FFMPEG_FOUND TRUE)
 ENDIF(FFMPEG_INCLUDE_DIRS AND FFMPEG_LIBRARIES)
-
 IF(FFMPEG_FOUND)
 	IF(NOT FFMPEG_FIND_QUIETLY)
 		MESSAGE(STATUS "Found FFmpeg: ${FFMPEG_LIBRARIES}")

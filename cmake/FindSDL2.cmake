@@ -83,6 +83,7 @@ FIND_PATH(SDL2_INCLUDE_DIR SDL.h
   /opt/local # DarwinPorts
   /opt/csw # Blastwave
   /opt
+  ${PSPDEV}/psp/include/SDL2
   C:/MinGW/include/SDL2
 )
 #MESSAGE("SDL2_INCLUDE_DIR is ${SDL2_INCLUDE_DIR}")

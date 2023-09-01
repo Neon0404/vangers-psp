@@ -3123,7 +3123,7 @@ void aciShowLocationPicture(void)
 void iGetIP(void)
 {
 	//Should be BigEndian in anycase
-	int IP = XSocketLocalHostExternADDR.host;
+	int IP = 0;
 	XBuffer XBuf;
 
 	XBuf <= (IP & 0xff) < "." <= ((IP >> 8) & 0xff) < "." <= ((IP >> 16) & 0xff) < "." <= ((IP >> 24) & 0xff);

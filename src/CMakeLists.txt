@@ -2,6 +2,8 @@ include_directories(
 	"${PROJECT_SOURCE_DIR}/lib/xtool"
 	"${PROJECT_SOURCE_DIR}/lib/xgraph"
 	"${PROJECT_SOURCE_DIR}/lib/xsound"
+	"${PROJECT_SOURCE_DIR}/clunk"
+	"${PROJECT_SOURCE_DIR}"
 )
 
 SET(vangers_SRCS
@@ -87,13 +89,13 @@ else()
 			#-Wl,-subsystem,windows
 		)
 	ENDIF(WIN32)
-
+	message(${PROJECT_SOURCE_DIR})
 	TARGET_LINK_LIBRARIES(vangers
 		${SDL2_LIBRARY}
 		${OGG_LIBRARY}
 		${VORBIS_LIBRARY}
 		${VORBISFILE_LIBRARY}
-		${CLUNK_LIBRARY}
+		#${CLUNK_LIBRARY}
 		${SDL2_NET_LIBRARY}
 		${FFMPEG_LIBRARIES}
 		${ZLIB_LIBRARIES}
@@ -103,5 +105,24 @@ else()
 		xtool
 		xgraph
 		xsound
+		${PROJECT_SOURCE_DIR}/pspgl/libGL.a
+		${PROJECT_SOURCE_DIR}/pspgl/libGLU.a
+		${PROJECT_SOURCE_DIR}/pspgl/libglut.a
+		${PROJECT_SOURCE_DIR}/clunk/build/libclunk.a
+		pspaudio
+		pspgu
+		pspctrl
+		pspdisplay
+		pspge
+		pspvram
+		pspvfpu
+		psphprm
 	)
+	create_pbp_file(
+    TARGET ${PROJECT_NAME}
+    ICON_PATH NULL
+    BACKGROUND_PATH NULL
+    PREVIEW_PATH NULL
+    TITLE ${PROJECT_NAME}
+)
 endif(ANDROID)

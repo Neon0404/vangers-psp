@@ -16,7 +16,7 @@
 #include "../actint/aci_scr.h"
 
 #include "../sound/hsound.h"
-#include "avi.h"
+//#include "avi.h"
 
 #ifndef _WIN32
 #include <arpa/inet.h> // ntohl() FIXME: remove
@@ -721,17 +721,18 @@ void iAVIBorderElement::free_mem(void)
 }
 
 void iAVIElement::free(void)
-{
+{/*
 	if(flags & EL_DATA_LOADED){
 		AVIstop(data);
 		AVIclose(data);
 
 		flags ^= EL_DATA_LOADED;
-	}
+	}*/
 }
 
 void iAVIElement::load(void)
 {
+/*
 	if(!(flags & EL_DATA_LOADED)){
 		flags &= ~AVI_STOPPED;
 
@@ -751,7 +752,7 @@ void iAVIElement::load(void)
 		AVIplay(data,0,0);
 
 		flags |= EL_DATA_LOADED;
-	}
+	}*/
 }
 
 void iAVIElement::load_shape(void)
@@ -808,10 +809,11 @@ void iBitmapElement::load_shape(void)
 
 void iAVIElement::init_size(void)
 {
+/*
 	if(flags & EL_DATA_LOADED){
 		SizeX = AVIwidth(data);
 		SizeY = AVIheight(data);
-	}
+	}*/
 }
 
 void iAVIElement::change_avi(char* fname)
@@ -1609,7 +1611,7 @@ void iScreenElement::redraw(int x,int y,int sc,int sm,int hide_mode)
 
 				lev = (null_lev * abs(sc)) >> 8;
 
-				if (((iAVIElement *)this)->check_visible() && !(menu && menu->flags & FM_ACTIVE)) {
+				/*if (((iAVIElement *)this)->check_visible() && !(menu && menu->flags & FM_ACTIVE)) {
 					AVIPrepareFrame(((iAVIElement *)this)->data);
 					AVIDrawFrame(
 						((iAVIElement *)this)->data, offsetX, offsetY, xgrScreenSizeX, screenRgba, lev / 82.0f);
@@ -1619,7 +1621,7 @@ void iScreenElement::redraw(int x,int y,int sc,int sm,int hide_mode)
 				} else {
 					XGR_Obj.fill(0, screen);
 					XGR_Obj.fill(0, screenRgba);
-				}
+				}*/
 			} break;
 			case I_AVI_BORDER_ELEM:
 				if(((iAVIBorderElement*)this) -> border_type == AVI_FLAT_BORDER){
@@ -1742,7 +1744,7 @@ void iScreenObject::init(void)
 		if(p -> type == I_AVI_ELEM){
 			iResBuf -> init();
 			*iResBuf < iVideoPathDefault < ((iAVIElement*)p) -> avi_name;
-			if(!AVIopen(iResBuf->address(),AVI_NOTIMER | AVI_NODRAW | AVI_LOOPING | AVI_NOPALETTE,0,&(((iAVIElement*)p) -> data))){
+			/*if(!AVIopen(iResBuf->address(),AVI_NOTIMER | AVI_NODRAW | AVI_LOOPING | AVI_NOPALETTE,0,&(((iAVIElement*)p) -> data))){
 				iResBuf -> init();
 				*iResBuf < iVideoPath < ((iAVIElement*)p) -> avi_name;
 				if(!AVIopen(iResBuf -> address(),AVI_NOTIMER | AVI_NODRAW | AVI_LOOPING | AVI_NOPALETTE,0,&(((iAVIElement*)p) -> data))){
@@ -1755,7 +1757,7 @@ void iScreenObject::init(void)
 			if(!p -> SizeX) p -> SizeX = AVIwidth(((iAVIElement*)p) -> data);
 			if(!p -> SizeY) p -> SizeY = AVIheight(((iAVIElement*)p) -> data);
 			AVIclose(((iAVIElement*)p) -> data);
-
+*/
 			flags |= OBJ_AVI_PRESENT;
 		}
 		if(p -> lX + p -> SizeX > sx) sx = p -> lX + p -> SizeX;
@@ -4238,4 +4240,3 @@ void iScreenDispatcher::end_event(void)
 		ActiveEv = NULL;
 	}
 }
-

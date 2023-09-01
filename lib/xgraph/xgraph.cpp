@@ -138,7 +138,7 @@ int XGR_Screen::init(int flags_in)
 	std::cout<<"XGR_Screen::init"<<std::endl;
 	// Init SDL video
 	if (XGR_ScreenSurface==NULL) {
-		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0) {
 			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
 		}
 		SDL_AddTimer(100, CursorAnim, NULL);
@@ -168,17 +168,28 @@ int XGR_Screen::init(int flags_in)
 	this->hdHeight = round(1280 / aspect);
 
 	std::cout<<"SDL_CreateWindowAndRenderer"<<std::endl;
-	if (XGR_FULL_SCREEN) {
+	/*if (XGR_FULL_SCREEN) {
 		if (SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &sdlWindow, &sdlRenderer) < 0) {
 			std::cout<<"ERROR1"<<std::endl;
 			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
 		}
 	} else {
-		if (SDL_CreateWindowAndRenderer(this->hdWidth, this->hdHeight, SDL_WINDOW_RESIZABLE, &sdlWindow, &sdlRenderer) < 0) {
+		if (SDL_CreateWindowAndRenderer(480, 272, SDL_WINDOW_RESIZABLE, &sdlWindow, &sdlRenderer) < 0) {
 			std::cout<<"ERROR2"<<std::endl;
 			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
 		}
-	}
+	}*/
+	sdlWindow = SDL_CreateWindow(
+        "window",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        480,
+        272,
+        0
+    );
+
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+	
 	std::cout << "SDL_Window created: " << this->hdWidth << "x" << this->hdHeight << std::endl;
 	SDL_SetWindowTitle(sdlWindow, "Vangers");
 	
@@ -194,6 +205,7 @@ int XGR_Screen::init(int flags_in)
 	} else {
 		std::cout<<"Can't load icon vangers.bmp"<<std::endl;
 	}
+
 	std::cout<<"SDL_SetRenderDrawColor"<<std::endl;
 	SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 	std::cout<<"SDL_RenderClear"<<std::endl;
@@ -258,11 +270,11 @@ void XGR_Screen::create_surfaces(int width, int height) {
 
 	SDL_GetWindowSize(sdlWindow, &RealX, &RealY);
 
-	if (!XGR_FULL_SCREEN) {
+	/*(if (!XGR_FULL_SCREEN) {
 		SDL_SetWindowPosition(sdlWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	} else {
 		SDL_SetWindowPosition(sdlWindow, 0, 0);
-	}
+	}*/
 
 	// Other initializations
 	ScreenX = xgrScreenSizeX = width;

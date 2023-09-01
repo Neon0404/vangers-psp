@@ -504,13 +504,14 @@ int xtInitApplication(void) {
     InstallSOUND();
     LoadResourceSOUND("resource/sound/effects/", 0);
     SetSoundVolume(256);
-
+	/*
     if (XJoystickInit()) {
         std::cout << "Joystick found\n";
         JoystickMode = JOYSTICK_Joystick;
     } else {
         std::cout << "Joystick not found" << std::endl;
     }
+	*/
 
     //XSocketInit();
 #ifdef _DEBUG

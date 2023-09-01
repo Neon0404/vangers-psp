@@ -13,6 +13,11 @@
 
 #include "xglobal.h"
 
+// strdup workaround
+#include <string.h>
+#include <stdlib.h>
+
+char* strdup (const char* s);
 // Some defines for 64K modes...
 #define XGR_RGB64K(r,g,b)	(((r) << XGR_SHIFT_R) + ((g) << XGR_SHIFT_G) + ((b) << XGR_SHIFT_B))
 #define XGR_64KR(c)		(((c) >> XGR_SHIFT_R) & XGR_COLOR_MASK_R)

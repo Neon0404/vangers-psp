@@ -121,7 +121,9 @@ namespace KDWIN {
 //STARTUPINFO StartUpInfo;
 
 int create_server(int port)
-{
+{  
+    return 0;
+/*
 	if(!XSocketLocalHostADDR.host)
 		ErrH.Abort("You have an incompatible network configuration. Please consult Readme.txt on how to configure your network for Vangers multiplayer.");
 	avaible_servers.clear_states();
@@ -157,7 +159,6 @@ int create_server(int port)
 			return avaible_servers.size();
 		}
 */
-	return 0;
 }
 void destroy_server()
 {
@@ -1508,4 +1509,3 @@ int test_block(unsigned char* ptr, int size)
 
 
 //===================================================================================
-
