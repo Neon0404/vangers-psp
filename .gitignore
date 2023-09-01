@@ -34,7 +34,6 @@ CMakeSettings.json
 # compile stuff
 /ffmpeg
 /build
-/clunk
 /vangers
 
 # Server env file
