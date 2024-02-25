@@ -23,7 +23,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# depends
+include(FindPkgConfig)
+pkg_search_module(SDL2 REQUIRED sdl2)
 #FIND_PACKAGE(SDL2 REQUIRED)
 #FIND_PACKAGE(SDL2_net REQUIRED)
 FIND_PACKAGE(Ogg REQUIRED)
@@ -55,14 +56,13 @@ add_compile_definitions(M_PI_2=1.57079632679489661923)
 
 # globals
 INCLUDE_DIRECTORIES(SYSTEM
-	home/neon/Desktop/ffmpeg/libavformat
-	/home/neon/Desktop/ffmpeg/libavcodec
+	${PROJECT_SOURCE_DIR}
+	${PROJECT_SOURCE_DIR}/clunk
+	#home/neon/Desktop/ffmpeg/libavformat
+	#/home/neon/Desktop/ffmpeg/libavcodec
 	${ZLIB_INCLUDE_DIR}
-	/home/neon/pspdev/psp/include/SDL2
-	/home/neon/pspdev/psp/include
-	/home/neon/Vangers
+	${SDL2_INCLUDE_DIRS}
 	#${FFMPEG_INCLUDE_DIRS}
-	/home/neon/clunk
 	${OGG_INCLUDE_DIR}
 	${VORBIS_INCLUDE_DIR}
 	${VORBISFILE_INCLUDE_DIR}

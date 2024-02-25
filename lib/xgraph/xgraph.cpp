@@ -168,17 +168,33 @@ int XGR_Screen::init(int flags_in)
 	this->hdHeight = round(1280 / aspect);
 
 	std::cout<<"SDL_CreateWindowAndRenderer"<<std::endl;
-	if (XGR_FULL_SCREEN) {
-		if (SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &sdlWindow, &sdlRenderer) < 0) {
-			std::cout<<"ERROR1"<<std::endl;
-			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
-		}
-	} else {
-		if (SDL_CreateWindowAndRenderer(this->hdWidth, this->hdHeight, SDL_WINDOW_RESIZABLE, &sdlWindow, &sdlRenderer) < 0) {
-			std::cout<<"ERROR2"<<std::endl;
-			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
-		}
-	}
+//	if (XGR_FULL_SCREEN) {
+//		std::cout << "FULLSCREEN" << std::endl;
+//		if (SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &sdlWindow, &sdlRenderer) < 0) {
+//			std::cout<<"ERROR1"<<std::endl;
+//			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
+//		}
+//	} else {
+//		if (SDL_CreateWindowAndRenderer(this->hdWidth, this->hdHeight, SDL_WINDOW_RESIZABLE, &sdlWindow, &sdlRenderer) < 0) {
+//			std::cout<<"ERROR2"<<std::endl;
+//			ErrH.Abort(SDL_GetError(),XERR_USER, 0);
+//		}
+//	}
+ 	sdlWindow = SDL_CreateWindow(
+        "window",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        480,
+        272,
+        0
+    );
+
+	std::cout << 1 << std::endl;
+std::cout << SDL_GetError() << std::endl;
+  sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+		std::cout << 1 << std::endl;
+std::cout << SDL_GetError() << std::endl;
+
 	std::cout << "SDL_Window created: " << this->hdWidth << "x" << this->hdHeight << std::endl;
 	SDL_SetWindowTitle(sdlWindow, "Vangers");
 	
@@ -252,14 +268,19 @@ void XGR_Screen::create_surfaces(int width, int height) {
 	sdlTexture = SDL_CreateTexture(sdlRenderer,
 								   SDL_PIXELFORMAT_ARGB8888, //SDL_PIXELFORMAT_INDEX8,
 								   SDL_TEXTUREACCESS_STREAMING,
-								   width, height);
+								   512, 256);
 
-	HDBackgroundTexture = BMP_CreateTexture("resource/actint/hd/hd_background.bmp", sdlRenderer);
+	        std::cout << "ctx1" << std::endl;
+
+	std::cout << SDL_GetError() << std::endl;
+	        std::cout << "ctx2" << std::endl;
+
+	//HDBackgroundTexture = BMP_CreateTexture("resource/actint/hd/hd_background.bmp", sdlRenderer);
 
 	SDL_GetWindowSize(sdlWindow, &RealX, &RealY);
 
 	if (!XGR_FULL_SCREEN) {
-		SDL_SetWindowPosition(sdlWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+		SDL_SetWindowPosition(sdlWindow, 0, 0);
 	} else {
 		SDL_SetWindowPosition(sdlWindow, 0, 0);
 	}
@@ -294,7 +315,7 @@ void XGR_Screen::set_resolution(int width, int height){
 	}
 
 	destroy_surfaces();
-	SDL_SetWindowSize(sdlWindow, width, height);
+	SDL_SetWindowSize(sdlWindow, 480, 272);
 	create_surfaces(width, height);
 }
 
@@ -326,8 +347,8 @@ void XGR_Screen::set_fullscreen(bool fullscreen) {
 	if (fullscreen!=XGR_FULL_SCREEN) {
 		SDL_SetWindowFullscreen(sdlWindow, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 		if (!fullscreen) {
-			SDL_SetWindowSize(sdlWindow, XGR_MAXX, XGR_MAXY);
-			SDL_SetWindowPosition(sdlWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			SDL_SetWindowSize(sdlWindow, 480, 272);//XGR_MAXX, XGR_MAXY);
+			SDL_SetWindowPosition(sdlWindow, 0, 0);
 			
 		} else {
 			SDL_SetWindowPosition(sdlWindow, 0, 0);
@@ -341,7 +362,7 @@ void XGR_Screen::set_fullscreen(bool fullscreen) {
 
 void XGR_Screen::set_is_scaled_renderer(bool is_scaled_renderer)
 {
-	this->is_scaled_renderer = is_scaled_renderer;
+	this->is_scaled_renderer = false;// is_scaled_renderer;
 }
 
 const bool XGR_Screen::get_is_scaled_renderer()
@@ -929,64 +950,112 @@ SDL_Surface* XGR_Screen::get_screenshot() {
 	return screenshotSurface;
 }
 
+void resizePixels(uint32_t* pixels, uint32_t *toPixels, int width, int height, int toWidth, int toHeight) {
+    for (int y = 0; y < toHeight; y++) {
+        for (int x = 0; x < toWidth; x++) {
+            int toIndex = y * toWidth + x;
+            int fromIndex = (y * height / toHeight) * width + (x * width / toWidth);
+            toPixels[toIndex] = pixels[fromIndex];
+        }
+    }
+}
 
 void XGR_Screen::flip()
 {
-	if(flags & XGR_INIT) {
-		set_2d_render_buffer();
-		if(XGR_MouseObj.flags & XGM_PROMPT_ACTIVE) {
-			XGR_MouseObj.GetPromptFon();
-			XGR_MouseObj.PutPrompt();
-		}
-		XGR_MouseObj.GetFon();
-		XGR_MouseObj.PutFrame();
-		set_default_render_buffer();
+    if(flags & XGR_INIT) {
+        set_2d_render_buffer();
+        if(XGR_MouseObj.flags & XGM_PROMPT_ACTIVE) {
+            XGR_MouseObj.GetPromptFon();
+            XGR_MouseObj.PutPrompt();
+        }
+        XGR_MouseObj.GetFon();
+        XGR_MouseObj.PutFrame();
+        set_default_render_buffer();
 
-		// std::cout<<"Flip"<<std::endl;
-		void *pixels;
-		int pitch;
-		SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
-		blitRgba((uint32_t*)pixels, get_default_render_buffer(), get_2d_rgba_render_buffer(), get_2d_render_buffer());
-		SDL_UnlockTexture(sdlTexture);
-		
-		SDL_RenderClear(sdlRenderer);
-		
-		if (XGR_FULL_SCREEN) {
-			SDL_GetWindowSize(sdlWindow, &RealX, &RealY);
-			SDL_RenderSetLogicalSize(sdlRenderer, RealX, RealY);
-			SDL_SetTextureColorMod(HDBackgroundTexture, averageColorPalette.r, averageColorPalette.g, averageColorPalette.b);
-			SDL_RenderCopy(sdlRenderer, HDBackgroundTexture, NULL, NULL);
-		}
-		SDL_RenderSetLogicalSize(sdlRenderer, xgrScreenSizeX, xgrScreenSizeY);
+        // std::cout<<"Flip"<<std::endl;
+				void *pixels = new uint32_t[800 * 600];
+				void *toPixels;
+        int pitch;
+        SDL_LockTexture(sdlTexture, NULL, &toPixels, &pitch);
 
-		if(is_scaled_renderer){
-			SDL_SetTextureColorMod(HDBackgroundTexture, averageColorPalette.r, averageColorPalette.g, averageColorPalette.b);
-			SDL_RenderCopy(sdlRenderer, HDBackgroundTexture, NULL, NULL);
+        std::cout << "1" << std::endl;
 
-			SDL_Rect src_rect {0, 0, 800, 600};
-			int new_width = screen_scale_y * 800;
-			SDL_Rect dst_rect {
-					.x = (xgrScreenSizeX - new_width)/2,
-					.y = 0,
-					.w = new_width,
-					.h = xgrScreenSizeY,
-			};
-			XGR_RenderSides(sdlRenderer, new_width);
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
-			SDL_RenderCopy(sdlRenderer, sdlTexture, &src_rect, &dst_rect);
-		}else{
-			SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-		}
+        std::cout << SDL_GetError() << std::endl;
 
-		SDL_RenderPresent(sdlRenderer);
+        blitRgba((uint32_t*)pixels, get_default_render_buffer(), get_2d_rgba_render_buffer(), get_2d_render_buffer());
+				resizePixels((uint32_t*)pixels, (uint32_t*)toPixels, 800, 600, 512, 256);
+        SDL_UnlockTexture(sdlTexture);
+				        std::cout << "2" << std::endl;
 
-		set_2d_render_buffer();
-		XGR_MouseObj.PutFon();
-		if(XGR_MouseObj.flags & XGM_PROMPT_ACTIVE) {
-			XGR_MouseObj.PutPromptFon();
-		}
-		set_default_render_buffer();
-	}
+        std::cout << SDL_GetError() << std::endl;
+
+				delete pixels;
+
+        SDL_RenderClear(sdlRenderer);
+				        std::cout << "3" << std::endl;
+
+        std::cout << SDL_GetError() << std::endl;
+
+        if (XGR_FULL_SCREEN) {
+            SDL_GetWindowSize(sdlWindow, &RealX, &RealY);
+            SDL_RenderSetLogicalSize(sdlRenderer, RealX, RealY);
+            SDL_SetTextureColorMod(HDBackgroundTexture, averageColorPalette.r, averageColorPalette.g, averageColorPalette.b);
+            SDL_RenderCopy(sdlRenderer, HDBackgroundTexture, NULL, NULL);
+        }
+        SDL_RenderSetLogicalSize(sdlRenderer, 480, 272);
+				        std::cout << "4" << std::endl;
+
+        std::cout << SDL_GetError() << std::endl;
+
+        if(is_scaled_renderer){
+            SDL_SetTextureColorMod(HDBackgroundTexture, averageColorPalette.r, averageColorPalette.g, averageColorPalette.b);
+						        std::cout << "5" << std::endl;
+
+            std::cout << SDL_GetError() << std::endl;
+
+            SDL_RenderCopy(sdlRenderer, HDBackgroundTexture, NULL, NULL);
+						        std::cout << "6" << std::endl;
+
+            std::cout << SDL_GetError() << std::endl;
+
+            SDL_Rect src_rect {0, 0, 800, 600};
+            int new_width = screen_scale_y * 800;
+            SDL_Rect dst_rect {
+                .x = (xgrScreenSizeX - new_width)/2,
+                .y = 0,
+                .w = new_width,
+                .h = xgrScreenSizeY,
+            };
+            XGR_RenderSides(sdlRenderer, new_width);
+            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
+						        std::cout << "7" << std::endl;
+
+            std::cout << SDL_GetError() << std::endl;
+
+            SDL_RenderCopy(sdlRenderer, sdlTexture, &src_rect, &dst_rect);
+						        std::cout << "8" << std::endl;
+
+            std::cout << SDL_GetError() << std::endl;
+
+        }else{
+            SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+						        std::cout << "9" << std::endl;
+
+            std::cout << SDL_GetError() << std::endl;
+
+        }
+
+        SDL_RenderPresent(sdlRenderer);
+        std::cout << SDL_GetError() << std::endl;
+
+
+        set_2d_render_buffer();
+        XGR_MouseObj.PutFon();
+        if(XGR_MouseObj.flags & XGM_PROMPT_ACTIVE) {
+            XGR_MouseObj.PutPromptFon();
+        }
+        set_default_render_buffer();
+    }
 }
 
 void XGR_Screen::flush(int x,int y,int sx,int sy)

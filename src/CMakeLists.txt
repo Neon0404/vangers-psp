@@ -87,24 +87,8 @@ SET(vangers_SRCS
 	ENDIF(WIN32)
         
 	TARGET_LINK_LIBRARIES(vangers
-SDL2main
-                pspdebug
-                pspdisplay
-                pspge
-                pspctrl
-                pspaudio
-                pspaudiolib
-                psputility
-                -lpspvram
-                -lpsphprm
-                -lpspvfpu
-                -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpsputility -lpspnet_inet  -lpsppower -lz -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -lz -lpsppower
-                /home/neon/pspgl/libGL.a
-/home/neon/pspgl/libGLU.a
-/home/neon/pspgl/libglut.a
-                #/usr/lib/x86_64-linux-gnu/libavcodec.a
-                /home/neon/pspdev/psp/lib/libSDL2.a
-                /home/neon/clunk/libclunk.a
+		SDL2main
+    ${CMAKE_SOURCE_DIR}/clunk/libclunk.a
 		${OGG_LIBRARY}
 		${VORBIS_LIBRARY}
 		${VORBISFILE_LIBRARY}
@@ -114,6 +98,42 @@ SDL2main
 		xtool
 		xgraph
 		xsound
+		${PSPDEV}/psp/lib/libSDL2.a
+		${PSPDEV}/psp/lib/libGL.a
+		${PSPDEV}/psp/lib/libGLU.a
+		${PSPDEV}/psp/lib/libglut.a
+    #/usr/lib/x86_64-linux-gnu/libavcodec.a
+		psphprm
+		pspgu
+		pspvfpu
+		pspdebug
+		pspdisplay
+		pspge
+		pspctrl
+		pspaudio
+		pspaudiolib
+		psputility
+		pspvram
+		#-lpspvram
+		#-lpsphprm
+		#-lpspvfpu	
+		#-lpsppower 
+		#-lpspdebug 
+		#-lpspgu 
+		#-lpspctrl 
+		#-lpspge 
+		#-lpspdisplay 
+		#-lpspsdk 
+		#-lpsprtc 
+		#-lpspaudio 
+		#-lc 
+		#-lpsputility 
+		#-lpspnet 
+		#-lpspnet_inet 
+		#-lpspnet_apctl 
+		#-lpspnet_resolver 
+		#-lpspuser 
+		#-lz 
 	)
 
 create_pbp_file(
